@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/cartSlice';
 import StarRating from './StarRating';
 import api from '../services/api';
+import styles from './ProductCard.module.css';
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
@@ -28,14 +29,14 @@ const ProductCard = ({ product }) => {
     : 'No ratings';
 
   return (
-    <div className="border p-3 rounded shadow-sm">
-      <img src={product.image} alt={product.title} width="100%" />
-      <h3>{product.title}</h3>
-      <p>${product.price}</p>
+    <div className={styles.card}>
+      <img className={styles.image} src={product.image} alt={product.title} width="100%" />
+      <h3 className={styles.title}>{product.title}</h3>
+      <p className={styles.price}>${product.price}</p>
       <p>Discount: {product.discount}%</p>
       <p>Rating: {avgRating}</p>
       <StarRating onRate={handleRating} />
-      <button onClick={() => dispatch(addToCart(product))}>Add to Cart</button>
+      <button className={styles.button} onClick={() => dispatch(addToCart(product))}>Add to Cart</button>
     </div>
   );
 };

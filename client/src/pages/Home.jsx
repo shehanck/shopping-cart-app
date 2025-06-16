@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../redux/productSlice';
 import ProductCard from '../components/ProductCard';
 import Navbar from '../components/Navbar';
+import styles from './Home.module.css';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -18,11 +19,11 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <Navbar />
-      <div>
-        <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search products..." />
-        <button onClick={handleSearch}>Search</button>
+      <div className={styles.container}>
+        <input className={styles.searchInput} type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search products..." />
+        <button className={styles.searchButton} onClick={handleSearch}>Search</button>
       </div>
 
       {loading ? (
@@ -30,7 +31,7 @@ const Home = () => {
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 200px)', gap: '1rem' }}>
+        <div className={styles.grid}>
           {items.map((product) => <ProductCard key={product._id} product={product} />)}
         </div>
       )}
