@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import styles from './Login.module.css';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -24,8 +25,8 @@ const Login = () => {
   });
 
   return (
-    <div>
-      <form onSubmit={formik.handleSubmit}>
+    <div className={styles.loginContainer}>
+      <form className={styles.loginForm} onSubmit={formik.handleSubmit}>
         <h2>Login</h2>
         <input type="email" name="email" placeholder="Email" required={true} onChange={formik.handleChange} />
         {formik.touched.email && formik.errors.email && <div>{formik.errors.email}</div>}
@@ -33,8 +34,10 @@ const Login = () => {
         {formik.touched.password && formik.errors.password && <div>{formik.errors.password}</div>}
         {error && <div>{error}</div>}
         <button type="submit" disabled={loading}>Login</button>
-      </form>
-      <Link to="/register">Register</Link>
+        <p className={styles.registerText}>
+          Don’t have an account? <Link to="/register">Register</Link>
+        </p>
+      </form>     
     </div>
   );
 };

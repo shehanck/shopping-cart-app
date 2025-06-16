@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
+import styles from './Register.module.css';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -24,17 +25,20 @@ const Register = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <h2>Register</h2>
-      <input type="email" name="email" placeholder="Email" required={true} onChange={formik.handleChange} />
-      {formik.touched.email && formik.errors.email && <div>{formik.errors.email}</div>}
-      <input type="password" name="password" placeholder="Password" required={true} onChange={formik.handleChange} />
-      {formik.touched.password && formik.errors.password && <div>{formik.errors.password}</div>}
-      <input type="text" name="mobile" placeholder="Mobile" required={true} onChange={formik.handleChange} />
-      {formik.touched.mobile && formik.errors.mobile && <div>{formik.errors.mobile}</div>}
-      {error && <div>{error}</div>}
-      <button type="submit" disabled={loading}>Register</button>
-    </form>
+    <div className={styles.registerContainer}>
+      <form className={styles.registerForm} onSubmit={formik.handleSubmit}>
+        <h2>Register</h2>
+        <input type="email" name="email" placeholder="Email" required={true} onChange={formik.handleChange} />
+        {formik.touched.email && formik.errors.email && <div>{formik.errors.email}</div>}
+        <input type="password" name="password" placeholder="Password" required={true} onChange={formik.handleChange} />
+        {formik.touched.password && formik.errors.password && <div>{formik.errors.password}</div>}
+        <input type="text" name="mobile" placeholder="Mobile" required={true} onChange={formik.handleChange} />
+        {formik.touched.mobile && formik.errors.mobile && <div>{formik.errors.mobile}</div>}
+        {error && <div>{error}</div>}
+        <button type="submit" disabled={loading}>Register</button>
+      </form>
+    </div>
+    
   );
 };
 

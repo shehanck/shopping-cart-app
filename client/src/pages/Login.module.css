@@ -1,0 +1,81 @@
+/* src/pages/Login.module.css */
+.loginContainer {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(120deg, #f0f4f8, #d4f3e7);
+}
+
+.loginForm {
+  background-color: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loginForm h2 {
+  margin-bottom: 10px;
+  text-align: center;
+  color: #333;
+}
+
+.loginForm label {
+  font-weight: 500;
+  color: #444;
+}
+
+.loginForm input {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.loginForm input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.3);
+}
+
+.loginForm button {
+  padding: 12px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loginForm button:hover {
+  background-color: #43a047;
+}
+
+.registerText {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.registerText a {
+  color: #4caf50;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.registerText a:hover {
+  text-decoration: underline;
+}
+
