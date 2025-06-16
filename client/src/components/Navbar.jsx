@@ -12,6 +12,7 @@ const Navbar = () => {
       {token && <Link to="/orders">My Orders</Link>}
       <Link to="/cart">🛒 Cart ({cartCount})</Link>
       {!token && <Link to="/login">Login</Link>}
+      {token && <Link to="/logout">Logout</Link>}
     </nav>
   );
 };
