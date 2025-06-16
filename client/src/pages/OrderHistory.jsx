@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import { useSelector } from 'react-redux';
 import Navbar from '../components/Navbar';
+import styles from './OrderHistory.module.css';
 
 const OrderHistory = () => {
   const token = useSelector((state) => state.auth.token);
@@ -17,14 +18,14 @@ const OrderHistory = () => {
   }, [token]);
 
   return (
-    <div>
+    <div className={styles.container}>
       <Navbar />
-      <h2>Your Order History</h2>
+      <h2 className={styles.title}>📦 Your Order History</h2>
       {orders.length === 0 ? (
-        <p>No orders yet.</p>
+        <p className={styles.empty}>No orders yet.</p>
       ) : (
         orders.map((order, index) => (
-          <div key={order._id} style={{ border: '1px solid #ddd', padding: '1rem', marginBottom: '1rem' }}>
+          <div className={styles.orderCard} key={order._id}>
             <h4>Order #{orders.length - index}</h4>
             <p><strong>Placed on:</strong> {new Date(order.createdAt).toLocaleString()}</p>
             <p><strong>Total:</strong> ${order.total.toFixed(2)}</p>
