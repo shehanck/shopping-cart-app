@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Logout from './pages/Logout';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import OrderHistory from './pages/OrderHistory';
@@ -15,6 +16,7 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/orders" element={<OrderHistory />} />
+      <Route path="/logout" element={<Logout />} />
     </Routes>
   );
 };
