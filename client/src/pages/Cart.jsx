@@ -4,24 +4,34 @@ import { removeFromCart, changeQuantity, clearCart } from '../redux/cartSlice';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import Navbar from '../components/Navbar';
-import styles from './Cart.module.css';
+
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Divider,
+  Grid,
+  TextField,
+  Typography,
+  Alert,
+} from '@mui/material';
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const cart = useSelector(state => state.cart.items);
+  const cart = useSelector((state) => state.cart.items);
   const total = cart.reduce((acc, item) => acc + item.price, 0);
 
   const handleCheckout = async () => {
     const token = localStorage.getItem('token');
     try {
-      const res = await api.post('/orders', {
-        cartItems: cart
-      }, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-      });
+      const res = await api.post(
+        '/orders',
+        { cartItems: cart },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
       alert('Order placed successfully!');
       dispatch(clearCart());
@@ -33,38 +43,87 @@ const Cart = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <>
       <Navbar />
-      <h2 className={styles.title}>🛒 Your Cart</h2>
-      {cart.length === 0 ? (
-        <p className={styles.empty}>Cart is empty</p>
-      ) : (
-        <div className={styles.itemsList}>
-          {cart.map(item => (
-            <div className={styles.item} key={item._id} style={{ borderBottom: '1px solid #ccc', padding: '1rem 0' }}>
-              <img className={styles.image} src={item.image} alt={item.title} width="100%" />
-              <h3 className={styles.name}>{item.title}</h3>
-              <p className={styles.price}>Price: ${item.price}</p>
-              <input
-                className={styles.quantityInput}
-                type="number"
-                min="1"
-                value={item.quantity}
-                onChange={(e) => dispatch(changeQuantity({ id: item._id, quantity: parseInt(e.target.value) }))}
-              />
-              <button className={styles.removeButton} onClick={() => dispatch(removeFromCart(item._id))} title="Remove item">❌</button>
-            </div>
-          ))}
-          <div className={styles.total}>
-            <strong>Total:</strong> <text className={styles.price}> ${total.toFixed(2)}</text>
-          </div>
-          <div style={{ marginTop: '1rem' }}>
-            <button className={styles.button} onClick={() => navigate('/')}>Continue Shopping</button>
-            <button className={styles.button} onClick={handleCheckout}>Checkout</button>
-          </div>
-        </div>
-      )}
-    </div>
+      <Container maxWidth="md" sx={{ mt: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Your Cart
+        </Typography>
+
+        {cart.length === 0 ? (
+          <Alert severity="info">Your cart is empty.</Alert>
+        ) : (
+          <Box>
+            {cart.map((item) => (
+              <Card key={item._id} sx={{ mb: 2 }}>
+                <CardContent>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="h6">{item.title}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Price: ${item.price}
+                      </Typography>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <TextField
+                        label="Quantity"
+                        type="number"
+                        size="small"
+                        fullWidth
+                        value={item.quantity}
+                        onChange={(e) =>
+                          dispatch(
+                            changeQuantity({
+                              id: item._id,
+                              quantity: parseInt(e.target.value) || 1,
+                            })
+                          )
+                        }
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        fullWidth
+                        onClick={() => dispatch(removeFromCart(item._id))}
+                      >
+                        Remove
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
+            ))}
+
+            <Box display="flex" justifyContent="right" gap={2}>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body1" color="textSecondary">
+                  Total: ${total.toFixed(2)}
+                </Typography>
+              </Grid>
+            </Box>
+
+            <Divider sx={{ my: 3 }} />
+
+            <Box display="flex" justifyContent="space-between" gap={2}>
+              <Button variant="outlined" onClick={() => navigate('/')}>
+                Continue Shopping
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleCheckout}
+              >
+                Checkout
+              </Button>
+            </Box>
+          </Box>
+        )}
+      </Container>
+    </>
   );
 };
 

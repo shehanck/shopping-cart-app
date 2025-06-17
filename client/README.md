@@ -1,70 +1,140 @@
-# Getting Started with Create React App
+# Shopping Cart App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a shopping cart web application built using **React**, **Redux Toolkit**, **Material-UI (MUI)**, and **Formik/Yup** for form handling. It supports features like user authentication, cart management, product rating, and order history. A Node.js + Express backend is used to handle API requests.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- User login & registration (with JWT)
+- Add to cart, quantity update, remove items
+- Checkout with order history tracking
+- Product rating system
+- Search functionality
+- Styled using Material UI components
+- Redux for global state management
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies
 
-### `npm test`
+- **Frontend:** React, Redux Toolkit, React Router, Material-UI, Formik + Yup
+- **Backend:** Node.js, Express, MongoDB
+- **Others:** Axios, JWT
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js (v18+ recommended)
+- npm or yarn
+- MongoDB instance running locally or on MongoDB Atlas
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Running the App Locally
 
-### `npm run eject`
+### 1. Clone the Repository
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+git clone https://github.com/shehanck/shopping-cart-app.git
+cd shopping-cart-app
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Install Backend Dependencies
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+cd server
+npm install
+```
 
-## Learn More
+#### Create `.env` file in `server/` with the following:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+--- Sample env file content ---
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/shopping-cart
+JWT_SECRET=your_jwt_secret_key
 
-### Code Splitting
+#### Run Backend Server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+node server.js
+```
 
-### Analyzing the Bundle Size
+This will start the backend at: `http://localhost:5000`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+### Install Frontend Dependencies
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+cd ../client
+npm install
+```
 
-### Advanced Configuration
+#### Pointing to backend:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+services/api.js should include the correct backend URL
+ex:- http://localhost:5000/api
 
-### Deployment
+#### Build React App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+npm run build
+```
 
-### `npm run build` fails to minify
+#### Start React App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+npm run start
+```
+
+This will start the frontend at: `http://localhost:3000`
+
+---
+
+## Folder Structure
+
+```
+shopping-cart-app/
+│
+├── client/            # React frontend
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── redux/
+│   │   ├── services/
+│   ├── App.jsx
+│   └── index.jsx
+│
+├── server/            # Node.js backend
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── server.js
+│   └── .env
+```
+
+---
+
+## Notes
+
+- Ensure MongoDB is running before starting the server. Add MongoDB connection string to .env file with correct database name.
+- Frontend uses `baseURL` defined in /services/api.js to connect to backend.
+- API Endpoints expected by frontend:
+  - `POST /api/users/login`
+  - `POST /api/users/register`
+  - `GET /api/products`
+  - `POST /api/products/:id/rate`
+  - `POST /api/orders`
+  - `GET /api/orders/my`

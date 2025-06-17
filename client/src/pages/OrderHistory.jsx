@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import { useSelector } from 'react-redux';
 import Navbar from '../components/Navbar';
-import styles from './OrderHistory.module.css';
+import {
+  Container,
+  Typography,
+  Card,
+  CardContent,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  Box,
+} from '@mui/material';
 
 const OrderHistory = () => {
   const token = useSelector((state) => state.auth.token);
@@ -18,29 +28,48 @@ const OrderHistory = () => {
   }, [token]);
 
   return (
-    <div className={styles.container}>
+    <>
       <Navbar />
-      <h2 className={styles.title}>📦 Your Order History</h2>
-      {orders.length === 0 ? (
-        <p className={styles.empty}>No orders yet.</p>
-      ) : (
-        orders.map((order, index) => (
-          <div className={styles.orderCard} key={order._id}>
-            <h4>Order #{orders.length - index}</h4>
-            <p><strong>Placed on:</strong> {new Date(order.createdAt).toLocaleString()}</p>
-            <p><strong>Total:</strong> ${order.total.toFixed(2)}</p>
-            <ul>
-              {order.items.map(item => (
-                <li key={item.productId}>
-                  {item.title} - ${item.price} × {item.quantity} 
-                  {item.discount ? ` (Discount: ${item.discount}%)` : ''}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      )}
-    </div>
+      <Container maxWidth="md" sx={{ mt: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Your Order History
+        </Typography>
+
+        {orders.length === 0 ? (
+          <Typography>No orders yet.</Typography>
+        ) : (
+          orders.map((order, index) => (
+            <Card key={order._id} variant="outlined" sx={{ mb: 3 }}>
+              <CardContent>
+                <Typography variant="h6">
+                  Order #{orders.length - index}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Placed on: {new Date(order.createdAt).toLocaleString()}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  Total: ${order.total.toFixed(2)}
+                </Typography>
+
+                <List dense>
+                  {order.items.map((item) => (
+                    <React.Fragment key={item.productId}>
+                      <ListItem disableGutters>
+                        <ListItemText
+                          primary={`${item.title} - $${item.price} × ${item.quantity}`}
+                          secondary={item.discount ? `Discount: ${item.discount}%` : null}
+                        />
+                      </ListItem>
+                      <Divider />
+                    </React.Fragment>
+                  ))}
+                </List>
+              </CardContent>
+            </Card>
+          ))
+        )}
+      </Container>
+    </>
   );
 };
 

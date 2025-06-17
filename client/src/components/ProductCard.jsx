@@ -1,9 +1,18 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/cartSlice';
-import StarRating from './StarRating';
 import api from '../services/api';
-import styles from './ProductCard.module.css';
+
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  Box,
+  CardActions,
+  Rating,
+} from '@mui/material';
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
@@ -15,9 +24,13 @@ const ProductCard = ({ product }) => {
       return;
     }
     try {
-      await api.post(`/products/${product._id}/rate`, { value }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.post(
+        `/products/${product._id}/rate`,
+        { value },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       alert('Rating submitted');
     } catch (err) {
       alert('Error rating product');
@@ -25,19 +38,52 @@ const ProductCard = ({ product }) => {
   };
 
   const avgRating = product.ratings?.length
-    ? (product.ratings.reduce((acc, r) => acc + r.value, 0) / product.ratings.length).toFixed(1)
-    : 'No ratings';
+    ? product.ratings.reduce((acc, r) => acc + r.value, 0) / product.ratings.length
+    : 0;
 
   return (
-    <div className={styles.card}>
-      <img className={styles.image} src={product.image} alt={product.title} width="100%" />
-      <h3 className={styles.title}>{product.title}</h3>
-      <p className={styles.price}>${product.price}</p>
-      <p>Discount: {product.discount}%</p>
-      <p>Rating: {avgRating}</p>
-      <StarRating onRate={handleRating} />
-      <button className={styles.button} onClick={() => dispatch(addToCart(product))}>Add to Cart</button>
-    </div>
+    <Card sx={{ maxWidth: 300, mx: 'auto', p: 1 }}>
+      <CardMedia
+        component="img"
+        height="180"
+        image={product.image}
+        alt={product.title}
+        sx={{ objectFit: 'contain' }}
+      />
+
+      <CardContent>
+        <Typography variant="h6" component="div" gutterBottom>
+          {product.title}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Price: ${product.price}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Discount: {product.discount}%
+        </Typography>
+        <Box mt={1} display="flex" alignItems="center" gap={1}>
+          <Rating
+            name={`rating-${product._id}`}
+            value={avgRating}
+            precision={0.5}
+            onChange={(_, value) => handleRating(value)}
+          />
+          <Typography variant="caption">
+            {product.ratings?.length ? avgRating.toFixed(1) : 'No ratings'}
+          </Typography>
+        </Box>
+      </CardContent>
+
+      <CardActions>
+        <Button
+          fullWidth
+          variant="contained"
+          onClick={() => dispatch(addToCart(product))}
+        >
+          Add to Cart
+        </Button>
+      </CardActions>
+    </Card>
   );
 };
 

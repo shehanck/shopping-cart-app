@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Box } from '@mui/material';
 
 const StarRating = ({ initialRating = 0, onRate }) => {
   const [hovered, setHovered] = useState(0);
@@ -10,19 +11,25 @@ const StarRating = ({ initialRating = 0, onRate }) => {
   };
 
   return (
-    <div>
+    <Box display="flex" gap={0.5}>
       {[1, 2, 3, 4, 5].map((n) => (
-        <span
+        <Box
           key={n}
+          component="span"
           onClick={() => handleClick(n)}
           onMouseEnter={() => setHovered(n)}
           onMouseLeave={() => setHovered(0)}
-          style={{ cursor: 'pointer', color: (hovered || selected) >= n ? 'gold' : 'gray', fontSize: '1.2rem' }}
+          sx={{
+            cursor: 'pointer',
+            fontSize: '1.5rem',
+            color: (hovered || selected) >= n ? 'gold' : 'grey.400',
+            transition: 'color 0.2s',
+          }}
         >
           ★
-        </span>
+        </Box>
       ))}
-    </div>
+    </Box>
   );
 };
 

@@ -3,7 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../redux/productSlice';
 import ProductCard from '../components/ProductCard';
 import Navbar from '../components/Navbar';
-import styles from './Home.module.css';
+
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+  CircularProgress,
+  Alert
+} from '@mui/material';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -19,23 +29,41 @@ const Home = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <>
       <Navbar />
-      <div className={styles.container}>
-        <input className={styles.searchInput} type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search products..." />
-        <button className={styles.searchButton} onClick={handleSearch}>Search</button>
-      </div>
+      <Container sx={{ mt: 4 }}>
+        <Box display="flex" alignItems="center" gap={2} mb={4}>
+          <TextField
+            label="Search products"
+            variant="outlined"
+            fullWidth
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <Button variant="contained" onClick={handleSearch}>
+            Search
+          </Button>
+        </Box>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : (
-        <div className={styles.grid}>
-          {items.map((product) => <ProductCard key={product._id} product={product} />)}
-        </div>
-      )}
-    </div>
+        {loading ? (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Alert severity="error">{error}</Alert>
+        ) : items.length === 0 ? (
+          <Typography variant="h6">No products found.</Typography>
+        ) : (
+          <Grid container spacing={3}>
+            {items.map((product) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
+                <ProductCard product={product} />
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Container>
+    </>
   );
 };
 
