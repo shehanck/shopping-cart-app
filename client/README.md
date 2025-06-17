@@ -59,9 +59,11 @@ JWT_SECRET=your_jwt_secret_key
 ```
 
 --- Sample env file content ---
+```sample_env
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/shopping-cart
 JWT_SECRET=your_jwt_secret_key
+```
 
 #### Run Backend Server
 
@@ -83,7 +85,7 @@ npm install
 #### Pointing to backend:
 
 services/api.js should include the correct backend URL
-ex:- http://localhost:5000/api
+(ex:- http://localhost:5000/api)
 
 #### Build React App
 
