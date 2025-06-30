@@ -24,9 +24,11 @@ const cartSlice = createSlice({
     },
     changeQuantity: (state, action) => {
       const { id, quantity } = action.payload;
-      const item = state.items.find(i => i._id === id);
-      if (item) item.quantity = quantity;
-      localStorage.setItem('cart', JSON.stringify(state.items));
+      if (quantity >= 1) {
+        const item = state.items.find(i => i._id === id);
+        if (item) item.quantity = quantity;
+        localStorage.setItem('cart', JSON.stringify(state.items));
+      }
     },
     clearCart: (state) => {
       state.items = [];

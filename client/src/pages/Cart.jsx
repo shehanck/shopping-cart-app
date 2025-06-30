@@ -22,7 +22,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.items);
-  const total = cart.reduce((acc, item) => acc + item.price, 0);
+  const total = cart.reduce((acc, item) => acc + item.price*item.quantity, 0);
 
   const handleCheckout = async () => {
     const token = localStorage.getItem('token');
