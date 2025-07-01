@@ -14,7 +14,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const Navbar = () => {
   const token = useSelector(state => state.auth.token);
-  const cartCount = useSelector(state => state.cart.items.reduce((sum, item) => sum + item.quantity, 0));
+  const cartCount = useSelector(state => state.cart.items.reduce((sum, item) => sum + 1, 0));
 
   return (
     <AppBar position="static" color="default" sx={{ mb: 3 }}>
