@@ -1,16 +1,21 @@
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Box, Typography, CircularProgress } from '@mui/material';
+import { logout } from '../redux/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Logout = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     localStorage.removeItem('token');
-
+    dispatch(logout());
     const timeout = setTimeout(() => {
-      window.location.href = '/';
+      navigate('/');
     }, 1000);
 
     return () => clearTimeout(timeout);
-  }, []);
+  }, [dispatch, navigate]);
 
   return (
     <Box

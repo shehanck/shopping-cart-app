@@ -1,9 +1,10 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../redux/authSlice';
+import { useDispatch } from 'react-redux';
+import { setCredentials  } from '../redux/authSlice';
 import { useNavigate, Link } from 'react-router-dom';
+import { useLoginUserMutation } from '../redux/apiSlice';
 
 import {
   Box,
@@ -18,7 +19,7 @@ import {
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.auth);
+  const [login, { isLoading, isError, error }] = useLoginUserMutation();
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -27,9 +28,12 @@ const Login = () => {
       password: Yup.string().required('Required'),
     }),
     onSubmit: async (values) => {
-      const res = await dispatch(loginUser(values));
-      if (!res.error) navigate('/');
-    },
+      try {
+        const data = await login(values).unwrap();
+        dispatch(setCredentials(data));
+        navigate('/');
+      } catch {}
+    }
   });
 
   return (
@@ -70,9 +74,9 @@ const Login = () => {
             helperText={formik.touched.password && formik.errors.password}
           />
 
-          {error && (
+          {isError && (
             <Alert severity="error" sx={{ mt: 2 }}>
-              {error}
+              {error?.data?.message || 'Login failed'}
             </Alert>
           )}
 
@@ -81,10 +85,10 @@ const Login = () => {
             color="primary"
             fullWidth
             type="submit"
-            disabled={loading}
+            disabled={isLoading}
             sx={{ mt: 2 }}
           >
-            {loading ? <CircularProgress size={24} color="inherit" /> : 'Login'}
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Login'}
           </Button>
         </form>
 

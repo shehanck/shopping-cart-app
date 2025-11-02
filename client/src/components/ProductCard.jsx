@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../redux/cartSlice';
-import api from '../services/api';
+import { useRateProductMutation } from '../redux/apiSlice';
 
 import {
   Card,
@@ -17,6 +17,7 @@ import {
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
+  const [rateProduct] = useRateProductMutation();
 
   const handleRating = async (value) => {
     if (!token) {
@@ -24,13 +25,7 @@ const ProductCard = ({ product }) => {
       return;
     }
     try {
-      await api.post(
-        `/products/${product._id}/rate`,
-        { value },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await rateProduct({ id: product._id, value }).unwrap();
       alert('Rating submitted');
     } catch (err) {
       alert('Error rating product');

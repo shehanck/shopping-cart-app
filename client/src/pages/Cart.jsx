@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, changeQuantity, clearCart } from '../redux/cartSlice';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
 import Navbar from '../components/Navbar';
+import { usePlaceOrderMutation } from '../redux/apiSlice';
 
 import {
   Box,
@@ -22,17 +22,15 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.items);
-  const total = cart.reduce((acc, item) => acc + item.price*item.quantity, 0);
+  const total = cart.reduce(
+  (acc, item) => acc + item.quantity * item.price * (1 - (item.discount || 0) / 100),
+  0
+);
+  const [placeOrder] = usePlaceOrderMutation();
 
   const handleCheckout = async () => {
-    const token = localStorage.getItem('token');
     try {
-      const res = await api.post(
-        '/orders',
-        { cartItems: cart },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
+      await placeOrder(cart).unwrap(); // throws if error
       alert('Order placed successfully!');
       dispatch(clearCart());
       navigate('/');

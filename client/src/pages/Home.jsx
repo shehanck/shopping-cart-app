@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../redux/productSlice';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import ProductCard from '../components/ProductCard';
 import Navbar from '../components/Navbar';
+import { useGetProductsQuery } from '../redux/apiSlice';
 
 import {
   Box,
@@ -16,16 +16,13 @@ import {
 } from '@mui/material';
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const { items, loading, error } = useSelector((state) => state.products);
+  const dispatch = useDispatch();  
   const [search, setSearch] = useState('');
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const { data: items = [], loading, error } = useGetProductsQuery(searchTerm);
 
   const handleSearch = () => {
-    dispatch(fetchProducts(search));
+     setSearchTerm(search); // triggers refetch with new term
   };
 
   return (

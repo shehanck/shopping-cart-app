@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import api from '../services/api';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import Navbar from '../components/Navbar';
+import { useGetUserOrdersQuery } from '../redux/apiSlice';
 import {
   Container,
   Typography,
@@ -11,21 +11,20 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Alert,
   Box,
+  CircularProgress,
 } from '@mui/material';
 
 const OrderHistory = () => {
   const token = useSelector((state) => state.auth.token);
-  const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
-    if (!token) return;
-    api.get('/orders/my', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then(res => setOrders(res.data))
-    .catch(err => console.error(err));
-  }, [token]);
+  const {
+    data: orders = [],
+    isLoading,
+    isError,
+    error,
+  } = useGetUserOrdersQuery(undefined, { skip: !token });
 
   return (
     <>
@@ -35,7 +34,25 @@ const OrderHistory = () => {
           Your Order History
         </Typography>
 
-        {orders.length === 0 ? (
+         {!token && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            Please login to view your orders.
+          </Alert>
+        )}
+
+        {token && isLoading && (
+          <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
+            <CircularProgress />
+          </Box>
+        )}
+
+        {token && isError && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {error?.data?.message || 'Failed to load orders'}
+          </Alert>
+        )}
+
+        {token && !isLoading && !isError && (orders.length === 0 ? (
           <Typography>No orders yet.</Typography>
         ) : (
           orders.map((order, index) => (
@@ -67,7 +84,7 @@ const OrderHistory = () => {
               </CardContent>
             </Card>
           ))
-        )}
+        ))}
       </Container>
     </>
   );

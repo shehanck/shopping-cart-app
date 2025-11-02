@@ -1,9 +1,10 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../redux/authSlice';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useRegisterUserMutation } from '../redux/apiSlice';
 
 import {
   Box,
@@ -18,7 +19,7 @@ import {
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.auth);
+  const [registerUser, { isLoading, isError, error }] = useRegisterUserMutation();
 
   const formik = useFormik({
     initialValues: { email: '', password: '', mobile: '' },
@@ -30,8 +31,11 @@ const Register = () => {
         .required('Required'),
     }),
     onSubmit: async (values) => {
-      const res = await dispatch(registerUser(values));
-      if (!res.error) navigate('/');
+      try {
+        const data = await registerUser(values).unwrap();
+        dispatch(setCredentials(data));
+        navigate('/');
+      } catch {}
     },
   });
 
@@ -85,9 +89,9 @@ const Register = () => {
             helperText={formik.touched.mobile && formik.errors.mobile}
           />
 
-          {error && (
+          {isError && (
             <Alert severity="error" sx={{ mt: 2 }}>
-              {error}
+              {error?.data?.message || 'Registration failed'}
             </Alert>
           )}
 
@@ -96,10 +100,10 @@ const Register = () => {
             color="primary"
             fullWidth
             type="submit"
-            disabled={loading}
+            disabled={isLoading}
             sx={{ mt: 2 }}
           >
-            {loading ? <CircularProgress size={24} color="inherit" /> : 'Register'}
+            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Register'}
           </Button>
         </form>
       </Paper>
