@@ -5,12 +5,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import ToastProvider from './components/ToastProvider';
 import RootLayout from './layouts/RootLayout';
 import ProtectedLayout from './layouts/ProtectedLayout';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import Logout from './pages/Logout';
-import Home from './pages/Home';
 import OrderHistory from './features/orders/OrderHistory';
-import Cart from './pages/Cart';
+import RegisterPage from './features/auth/RegisterPage';
+import LoginPage from './features/auth/LoginPage';
+import ProductsPage from './features/products/ProductsPage';
+import CartPage from './features/cart/CartPage';
 
 const theme = createTheme({
   palette: {
@@ -31,16 +30,15 @@ const App = () => {
       <ToastProvider>
         <Routes>
           <Route element={<RootLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/logout" element={<Logout />} />
+            <Route path="/" element={<ProductsPage />} />
+            <Route path="/cart" element={<CartPage />} />
 
             <Route element={<ProtectedLayout />}>
               <Route path="/orders" element={<OrderHistory />} />
             </Route>
 
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Route>
         </Routes>
       </ToastProvider>

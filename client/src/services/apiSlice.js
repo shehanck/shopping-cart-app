@@ -53,8 +53,8 @@ export const apiSlice = createApi({
       invalidatesTags: (arg) => [{ type: 'Product', id: arg.id }],
     }),
     getUserOrders: builder.query({
-      query: () => '/orders/my',
-      providesTags: (result) =>
+      query: (_userId) => '/orders/my',
+      providesTags: (result, error, _arg, _meta) =>
     result && Array.isArray(result)
       ? [
           ...result.map((o) => ({ type: 'Order', id: o._id })),

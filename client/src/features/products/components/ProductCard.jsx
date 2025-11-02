@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../cart/cartSlice';
-import { useRateProductMutation } from '../../services/apiSlice';
-import { useToast } from '../../components/ToastProvider';
+import { addToCart } from '../../cart/cartSlice';
+import { useRateProductMutation } from '../../../services/apiSlice';
+import { useToast } from '../../../components/ToastProvider';
+import { computeAvgRating } from '../utils';
 
 import {
   Card,
@@ -34,9 +35,7 @@ const ProductCard = ({ product }) => {
     }
   };
 
-  const avgRating = product.ratings?.length
-    ? product.ratings.reduce((acc, r) => acc + r.value, 0) / product.ratings.length
-    : 0;
+  const avgRating = computeAvgRating(product.ratings);
 
   return (
     <Card sx={{ maxWidth: 300, mx: 'auto', p: 1 }}>

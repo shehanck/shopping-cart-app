@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useLogout } from '../features/auth/hooks/useLogout';
 import { Link } from 'react-router-dom';
 import { selectCartCount } from '../features/cart/selectors';
 import {
@@ -16,6 +17,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 const Navbar = () => {
   const token = useSelector(state => state.auth.token);
   const cartCount = useSelector(selectCartCount);
+  const { onLogout } = useLogout();
 
   return (
     <AppBar position="static" color="default" sx={{ mb: 3 }}>
@@ -36,7 +38,7 @@ const Navbar = () => {
             </Button>
           )}
           {token && (
-            <Button component={Link} to="/logout" color="inherit">
+            <Button color="inherit" onClick={onLogout}>
               Logout
             </Button>
           )}
