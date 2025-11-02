@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import ProductCard from '../components/ProductCard';
-import Navbar from '../components/Navbar';
 import { useGetProductsQuery } from '../redux/apiSlice';
 
 import {
@@ -15,11 +13,10 @@ import {
   Alert
 } from '@mui/material';
 
-const Home = () => {
-  const dispatch = useDispatch();  
+const Home = () => { 
   const [search, setSearch] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const { data: items = [], loading, error } = useGetProductsQuery(searchTerm);
+  const { data: items = [], isLoading, isError, error } = useGetProductsQuery(searchTerm);
 
   const handleSearch = () => {
      setSearchTerm(search); // triggers refetch with new term
@@ -27,7 +24,6 @@ const Home = () => {
 
   return (
     <>
-      <Navbar />
       <Container sx={{ mt: 4 }}>
         <Box display="flex" alignItems="center" gap={2} mb={4}>
           <TextField
@@ -42,12 +38,14 @@ const Home = () => {
           </Button>
         </Box>
 
-        {loading ? (
+        {isLoading ? (
           <Box display="flex" justifyContent="center">
             <CircularProgress />
           </Box>
-        ) : error ? (
-          <Alert severity="error">{error}</Alert>
+        ) : isError ? (
+          <Alert severity="error">
+            {error?.data?.message || 'Failed to load products'}
+          </Alert>
         ) : items.length === 0 ? (
           <Typography variant="h6">No products found.</Typography>
         ) : (

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Navbar from '../components/Navbar';
 import { useGetUserOrdersQuery } from '../redux/apiSlice';
 import {
   Container,
@@ -28,7 +27,6 @@ const OrderHistory = () => {
 
   return (
     <>
-      <Navbar />
       <Container maxWidth="md" sx={{ mt: 4 }}>
         <Typography variant="h4" gutterBottom>
           Your Order History

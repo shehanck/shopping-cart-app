@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, changeQuantity, clearCart } from '../redux/cartSlice';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import { usePlaceOrderMutation } from '../redux/apiSlice';
 
 import {
@@ -42,7 +41,6 @@ const Cart = () => {
 
   return (
     <>
-      <Navbar />
       <Container maxWidth="md" sx={{ mt: 4 }}>
         <Typography variant="h4" gutterBottom>
           Your Cart
