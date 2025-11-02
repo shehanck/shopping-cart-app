@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ProductCard from '../components/ProductCard';
-import { useGetProductsQuery } from '../redux/apiSlice';
+import ProductCard from '../features/products/ProductCard';
+import { useGetProductsQuery } from '../services/apiSlice';
 
 import {
   Box,

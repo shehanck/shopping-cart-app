@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../redux/cartSlice';
-import { useRateProductMutation } from '../redux/apiSlice';
+import { addToCart } from '../cart/cartSlice';
+import { useRateProductMutation } from '../../services/apiSlice';
 
 import {
   Card,

@@ -10,7 +10,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Product'],
+  tagTypes: ['Product', 'Order'],
   endpoints: (builder) => ({
     placeOrder: builder.mutation({
       query: (cartItems) => ({
@@ -18,11 +18,12 @@ export const apiSlice = createApi({
         method: 'POST',
         body: { cartItems },
       }),
+      invalidatesTags: () => [{ type: 'Order', id: 'LIST' }],
     }),
     getProducts: builder.query({
         query: (search = '') => `/products?search=${search}`,
         providesTags: (result) =>
-    result
+    result && Array.isArray(result)
       ? [
           ...result.map((p) => ({ type: 'Product', id: p._id })),
           { type: 'Product', id: 'LIST' },
@@ -53,6 +54,13 @@ export const apiSlice = createApi({
     }),
     getUserOrders: builder.query({
       query: () => '/orders/my',
+      providesTags: (result) =>
+    result && Array.isArray(result)
+      ? [
+          ...result.map((o) => ({ type: 'Order', id: o._id })),
+          { type: 'Order', id: 'LIST' },
+        ]
+      : [{ type: 'Order', id: 'LIST' }],
     }),
   }),
 });

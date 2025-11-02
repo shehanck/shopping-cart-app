@@ -2,9 +2,9 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from '../redux/authSlice';
+import { setCredentials } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { useRegisterUserMutation } from '../redux/apiSlice';
+import { useRegisterUserMutation } from '../services/apiSlice';
 
 import {
   Box,

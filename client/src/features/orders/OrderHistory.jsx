@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useGetUserOrdersQuery } from '../redux/apiSlice';
+import { useGetUserOrdersQuery } from '../../services/apiSlice';
 import {
   Container,
   Typography,

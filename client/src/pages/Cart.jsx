@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFromCart, changeQuantity, clearCart } from '../redux/cartSlice';
+import { removeFromCart, changeQuantity, clearCart } from '../features/cart/cartSlice';
 import { useNavigate } from 'react-router-dom';
-import { usePlaceOrderMutation } from '../redux/apiSlice';
+import { usePlaceOrderMutation } from '../services/apiSlice';
+import { selectCartItems, selectCartTotal } from '../features/cart/selectors';
 
 import {
   Box,
@@ -20,11 +21,8 @@ import {
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const cart = useSelector((state) => state.cart.items);
-  const total = cart.reduce(
-  (acc, item) => acc + item.quantity * item.price * (1 - (item.discount || 0) / 100),
-  0
-);
+  const cart = useSelector(selectCartItems);
+  const total = useSelector(selectCartTotal);
   const [placeOrder] = usePlaceOrderMutation();
 
   const handleCheckout = async () => {

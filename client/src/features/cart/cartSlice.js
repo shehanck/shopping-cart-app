@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { logout, setCredentials } from './authSlice';
+import { logout, setCredentials } from '../auth/authSlice';
 
 const getUserFromStorage = () => {
   try {
