@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../cart/cartSlice';
 import { useRateProductMutation } from '../../services/apiSlice';
+import { useToast } from '../../components/ToastProvider';
 
 import {
   Card,
@@ -18,17 +19,18 @@ const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const [rateProduct] = useRateProductMutation();
+  const toast = useToast();
 
   const handleRating = async (value) => {
     if (!token) {
-      alert('Login to rate');
+      toast.info('Login to rate');
       return;
     }
     try {
       await rateProduct({ id: product._id, value }).unwrap();
-      alert('Rating submitted');
+      toast.success('Rating submitted');
     } catch (err) {
-      alert('Error rating product');
+      toast.error('Error rating product');
     }
   };
 

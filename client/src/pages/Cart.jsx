@@ -4,6 +4,7 @@ import { removeFromCart, changeQuantity, clearCart } from '../features/cart/cart
 import { useNavigate } from 'react-router-dom';
 import { usePlaceOrderMutation } from '../services/apiSlice';
 import { selectCartItems, selectCartTotal } from '../features/cart/selectors';
+import { useToast } from '../components/ToastProvider';
 
 import {
   Box,
@@ -24,15 +25,16 @@ const Cart = () => {
   const cart = useSelector(selectCartItems);
   const total = useSelector(selectCartTotal);
   const [placeOrder] = usePlaceOrderMutation();
+  const toast = useToast();
 
   const handleCheckout = async () => {
     try {
       await placeOrder(cart).unwrap(); // throws if error
-      alert('Order placed successfully!');
+      toast.success('Order placed successfully!');
       dispatch(clearCart());
       navigate('/');
     } catch (err) {
-      alert('Checkout failed. Please login again.');
+      toast.error('Checkout failed. Please login again.');
       console.error(err);
     }
   };
