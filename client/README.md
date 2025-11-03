@@ -20,7 +20,7 @@ This is a shopping cart web application built using **React**, **Redux Toolkit**
 
 - **Frontend:** React, Redux Toolkit, React Router, Material-UI, Formik + Yup
 - **Backend:** Node.js, Express, MongoDB
-- **Others:** Axios, JWT
+- **Others:** JWT
 
 ---
 
@@ -108,23 +108,73 @@ This will start the frontend at: `http://localhost:3000`
 ```
 shopping-cart-app/
 │
-├── client/            # React frontend
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── redux/
-│   │   ├── services/
-│   ├── App.jsx
-│   └── index.jsx
+├── client/                               # React frontend
+│   ├── package.json
+│   └── src/
+│       ├── App.jsx                       # Routes and layouts
+│       ├── components/                   # Global, shared UI
+│       │   ├── Navbar.jsx
+│       │   └── ToastProvider.jsx
+│       ├── layouts/                      # Route layouts (Outlet)
+│       │   ├── ProtectedLayout.jsx
+│       │   └── RootLayout.jsx
+│       ├── services/                     # RTK Query API
+│       │   └── apiSlice.js
+│       ├── redux/                        # Store setup and middleware
+│       │   └── store.js
+│       ├── features/                     # Feature-first structure
+│       │   ├── auth/
+│       │   │   ├── authSlice.js
+│       │   │   ├── LoginPage.jsx
+│       │   │   ├── RegisterPage.jsx
+│       │   │   ├── hooks/
+│       │   │   │   ├── useAuthController.js
+│       │   │   │   ├── useLoginUser.js
+│       │   │   │   ├── useRegisterUser.js
+│       │   │   │   └── useLogout.js
+│       │   │   └── components/
+│       │   │       ├── LoginForm.jsx
+│       │   │       ├── RegisterForm.jsx
+│       │   │       └── index.js
+│       │   ├── cart/
+│       │   │   ├── cartSlice.js          # Per-user/guest cart persistence
+│       │   │   ├── CartPage.jsx
+│       │   │   ├── hooks/
+│       │   │   │   └── useCartController.js
+│       │   │   ├── selectors.js
+│       │   │   └── components/
+│       │   │       ├── CartList.jsx
+│       │   │       ├── CartSummary.jsx
+│       │   │       └── index.js
+│       │   ├── products/
+│       │   │   ├── ProductsPage.jsx
+│       │   │   ├── hooks/
+│       │   │   │   ├── useGetProducts.js
+│       │   │   │   └── useRateProduct.js
+│       │   │   ├── utils/
+│       │   │   │   ├── computeAvgRating.js
+│       │   │   │   └── index.js
+│       │   │   └── components/
+│       │   │       ├── ProductCard.jsx
+│       │   │       └── index.js
+│       │   └── orders/
+│       │       ├── OrderHistory.jsx
+│       │       ├── hooks/
+│       │       │   └── useGetOrders.js
+│       │       └── components/
+│       │           ├── OrderRow.jsx
+│       │           ├── OrdersList.jsx
+│       │           └── index.js
+│       └── index.jsx                     # React root render (BrowserRouter + Provider)
 │
-├── server/            # Node.js backend
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── server.js
-│   └── .env
+└── server/                               # Node.js backend
+    ├── config/
+    ├── controllers/
+    ├── models/
+    ├── routes/
+    ├── index.js
+    ├── server.js
+    └── .env
 ```
 
 ---
