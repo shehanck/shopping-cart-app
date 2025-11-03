@@ -84,7 +84,7 @@ npm install
 
 #### Pointing to backend:
 
-services/api.js should include the correct backend URL
+services/apiSlice.js should include the correct backend URL
 (ex:- http://localhost:5000/api)
 
 #### Build React App
